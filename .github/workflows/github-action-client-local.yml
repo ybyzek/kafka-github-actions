@@ -1,7 +1,5 @@
 name: github-action-client-local
-on:
-  push:
-    branches: [main]
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
