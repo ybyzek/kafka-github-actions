@@ -1,0 +1,20 @@
+name: github-action-client-ccloud
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: franzbischoff/replace_envs@v1
+        env:
+          CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
+          CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
+          CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
+        with:
+          from_file: 'ccloud.properties'
+          to_file: 'ccloud.properties'
+          commit: 'false'
+      - uses: actions/run-producer
+      - uses: actions/run-consumer

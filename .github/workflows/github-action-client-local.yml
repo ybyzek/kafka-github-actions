@@ -1,0 +1,12 @@
+name: github-action-client-local
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/start-cp
+      - uses: actions/run-producer
+      - uses: actions/run-consumer
