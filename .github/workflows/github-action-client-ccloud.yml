@@ -14,5 +14,8 @@ jobs:
           from_file: 'ccloud.properties'
           to_file: 'ccloud.properties'
           commit: 'false'
+      - uses: actions/build-client-app
+        env:
+          CONFIG_FILE: ccloud.properties
       - uses: actions/run-producer
       - uses: actions/run-consumer

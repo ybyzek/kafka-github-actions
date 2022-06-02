@@ -1,1 +1,1 @@
-docker run -it --rm python-app bash -c './consumer.py -f ./librdkafka.config -t test1'
+docker run -it --net kafka-github-actions_default --name python-app --rm python-app bash -c 'timeout 10 ./consumer.py -f ./librdkafka.config -t test1'

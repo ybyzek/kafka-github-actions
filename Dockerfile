@@ -4,4 +4,6 @@ COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install -U -r /tmp/requirements.txt
 
 COPY *.py ./
-COPY librdkafka.local.config ./
+
+ARG CONFIG
+COPY $CONFIG ./librdkafka.config
