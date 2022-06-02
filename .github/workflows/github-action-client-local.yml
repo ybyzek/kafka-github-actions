@@ -11,8 +11,9 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '30s'
-      - uses: actions/build-client-app
+      - uses: ./.github/actions/build-client-app
         env:
           CONFIG_FILE: librdkafka.local.config
-      - uses: actions/run-producer
-      - uses: actions/run-consumer
+      - uses: ./.github/actions/run-producer
+      - uses: ./.github/actions/run-consumer
+      - run: echo "This job's status is ${{ job.status }}."
