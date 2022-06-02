@@ -1,1 +1,1 @@
-docker build --build-arg CONFIG=${CONFIG} -t python-app .
+docker build --build-arg CONFIG=${CONFIG} -t python-app ../../.
