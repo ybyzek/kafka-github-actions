@@ -13,7 +13,7 @@ jobs:
           time: '30s'
       - uses: ./.github/actions/build-client-app
         env:
-          CONFIG_FILE: ../../librdkafka.local.config
+          CONFIG: ../../librdkafka.local.config
       - uses: ./.github/actions/run-producer
       - uses: ./.github/actions/run-consumer
       - run: echo "This job's status is ${{ job.status }}."
