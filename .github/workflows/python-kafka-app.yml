@@ -39,15 +39,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
+      CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
+      CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
+
     steps:
 
       - uses: actions/checkout@v2
 
       - uses: franzbischoff/replace_envs@v1
-        env:
-          CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
-          CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
-          CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
         with:
           from_file: 'librdkafka.ccloud.config'
           to_file: 'librdkafka.ccloud.config'
@@ -58,3 +59,6 @@ jobs:
 
       - name: Run Kafka client app to Confluent Cloud
         run: docker run -t --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+
+      - name: Test message count
+        run: tests/ccloud.sh $TOPIC
