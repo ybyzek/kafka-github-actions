@@ -22,7 +22,7 @@ jobs:
       - name: wget
         uses: wei/wget@v1
         with:
-          args: -qO- https://github.com/confluentinc/cp-all-in-one/blob/latest/cp-all-in-one/docker-compose.yml
+          args: -qO- https://raw.githubusercontent.com/confluentinc/cp-all-in-one/latest/cp-all-in-one/docker-compose.yml
 
       - name: Start Kafka
         run: docker-compose up -d zookeeper broker
