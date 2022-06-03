@@ -7,16 +7,16 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build python Docker image
         run: docker build --build-arg CONFIG=librdkafka.local.config -t python-app .
-      - name: Run Kafka
+      - name: Start Kafka
         run: docker-compose up -d
       - name: Sleep for 30 seconds
         uses: jakejarvis/wait-action@master
         with:
           time: '30s'
-      #- name: Run producer
-      #  run: docker run --net kafka-github-actions_default --name my-python-app --rm python-app bash -c './producer.py -f ./librdkafka.config -t test1'
-      #- name: Run consumer
-      #  run: docker run -t --net kafka-github-actions_default --name my-python-app --rm python-app bash -c 'timeout 10 ./consumer.py -f ./librdkafka.config -t test1' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
-      - name: Run Docker image
+      - name: Run client app
         run: docker run -t --net kafka-github-actions_default --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
-      - run: echo "Job status is ${{ job.status }}"
+      - name: Test message count pass
+        run: [[ $(docker exec broker bash -c 'kafka-console-consumer --bootstrap-server localhost:9092 --topic test1 --from-beginning --max-messages 10 --timeout-ms 10000' 2>&1 | grep "Processed a total of 10 messages") == "Processed a total of 10 messages" ]]
+      - name: Test message count fail
+        run: [[ $(docker exec broker bash -c 'kafka-console-consumer --bootstrap-server localhost:9092 --topic test2 --from-beginning --max-messages 10 --timeout-ms 10000' 2>&1 | grep "Processed a total of 10 messages") == "Processed a total of 10 messages" ]]
+      - run: echo "Job status: ${{ job.status }}"
