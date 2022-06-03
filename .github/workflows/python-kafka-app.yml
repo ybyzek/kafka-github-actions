@@ -24,6 +24,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    steps:
+
       - name: Start Kafka
         run: docker-compose up -d
 
