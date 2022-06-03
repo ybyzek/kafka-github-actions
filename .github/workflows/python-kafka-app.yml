@@ -4,11 +4,33 @@ on: [push]
 
 env:
   TOPIC: test1
-
+  CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
+  CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
+  CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
+  # Confluent Cloud Schema Registry and AVRO
+  TOPIC_AVRO: test2-avro
+  CONFLUENT_SCHEMA_REGISTRY_URL: ${{ secrets.CONFLUENT_SCHEMA_REGISTRY_URL }}
+  CONFLUENT_BASIC_AUTH_USER_INFO: ${{ secrets.CONFLUENT_BASIC_AUTH_USER_INFO }}
 
 jobs:
 
+  unit:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Build Docker image for Kafka client app to local Kafka cluster
+        run: docker build --build-arg CONFIG=librdkafka.unit.config --build-arg TOPIC=$TOPIC -t python-app .
+
+      - name: Run Kafka client app to local cluster
+        run: docker run -t --net kafka-github-actions_default --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+
   local:
+
+    needs: unit
 
     runs-on: ubuntu-latest
 
@@ -19,12 +41,12 @@ jobs:
       - name: Build Docker image for Kafka client app to local Kafka cluster
         run: docker build --build-arg CONFIG=librdkafka.local.config --build-arg TOPIC=$TOPIC -t python-app .
 
-      - name: wget
+      - name: Get cp-all-in-one
         uses: wei/wget@v1
         with:
           args: -O docker-compose.yml https://raw.githubusercontent.com/confluentinc/cp-all-in-one/latest/cp-all-in-one/docker-compose.yml
 
-      - name: Start Kafka
+      - name: Start local Kafka cluster
         run: docker-compose up -d zookeeper broker
 
       - name: Sleep for 20 seconds
@@ -32,7 +54,7 @@ jobs:
         with:
           time: '20s'
 
-      - name: Run Kafka client app to local Kafka cluster
+      - name: Run Kafka client app to local cluster
         run: docker run -t --net kafka-github-actions_default --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
@@ -43,11 +65,6 @@ jobs:
     needs: local
 
     runs-on: ubuntu-latest
-
-    env:
-      CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
-      CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
-      CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
 
     steps:
 
@@ -67,3 +84,28 @@ jobs:
 
       - name: Test message count
         run: tests/ccloud.sh $TOPIC
+
+  ccloud-avro:
+
+    needs: ccloud
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - uses: franzbischoff/replace_envs@v1
+        with:
+          from_file: 'librdkafka.ccloud.config'
+          to_file: 'librdkafka.ccloud.config'
+          commit: 'false'
+
+      - name: Build Docker image for Kafka client app to Confluent Cloud
+        run: docker build --build-arg CONFIG=librdkafka.ccloud-avro.config --build-arg TOPIC=$TOPIC_AVRO -t python-avro-app -f Dockerfile-avro .
+
+      - name: Run Kafka client app to Confluent Cloud
+        run: docker run -t --name my-python-avro-app --rm python-avro-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+
+      - name: Test message count
+        run: tests/ccloud-avro.sh $TOPIC_AVRO
