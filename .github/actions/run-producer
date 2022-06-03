@@ -1,1 +1,0 @@
-docker run -it --net kafka-github-actions_default --name python-app --rm python-app bash -c './producer.py -f ./librdkafka.config -t test1'
