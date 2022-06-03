@@ -2,14 +2,14 @@ name: github-action-client-local
 
 on: [push]
 
+env:
+  TOPIC: test3
+
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-
-    env:
-      TOPIC: test3
 
     steps:
 
@@ -17,6 +17,12 @@ jobs:
 
       - name: Build Docker image for Kafka client app
         run: docker build --build-arg CONFIG=librdkafka.local.config --build-arg TOPIC=$TOPIC -t python-app .
+
+  test-local:
+
+    needs: build
+
+    runs-on: ubuntu-latest
 
       - name: Start Kafka
         run: docker-compose up -d
