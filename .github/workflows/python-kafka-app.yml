@@ -97,8 +97,8 @@ jobs:
 
       - uses: franzbischoff/replace_envs@v1
         with:
-          from_file: 'librdkafka.ccloud.config'
-          to_file: 'librdkafka.ccloud.config'
+          from_file: 'librdkafka.ccloud-avro.config'
+          to_file: 'librdkafka.ccloud-avro.config'
           commit: 'false'
 
       - name: Build Docker image for Kafka client app to Confluent Cloud
