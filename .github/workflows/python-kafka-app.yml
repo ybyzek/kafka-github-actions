@@ -1,0 +1,64 @@
+name: github-action-client-local
+
+on: [push]
+
+env:
+  TOPIC: test4
+
+
+jobs:
+
+  local:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Build Docker image for Kafka client app to local Kafka cluster
+        run: docker build --build-arg CONFIG=librdkafka.local.config --build-arg TOPIC=$TOPIC -t python-app .
+
+      - name: Start Kafka
+        run: docker-compose up -d
+
+      - name: Sleep for 20 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '20s'
+
+      - name: Run Kafka client app to local Kafka cluster
+        run: docker run -t --net kafka-github-actions_default --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+
+      - name: Test message count
+        run: tests/local.sh $TOPIC
+
+  ccloud:
+
+    needs: local
+
+    runs-on: ubuntu-latest
+
+    env:
+      CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
+      CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
+      CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - uses: franzbischoff/replace_envs@v1
+        with:
+          from_file: 'librdkafka.ccloud.config'
+          to_file: 'librdkafka.ccloud.config'
+          commit: 'false'
+
+      - name: Build Docker image for Kafka client app to Confluent Cloud
+        run: docker build --build-arg CONFIG=librdkafka.ccloud.config --build-arg TOPIC=$TOPIC -t python-app .
+
+      - name: Run Kafka client app to Confluent Cloud
+        run: docker run -t --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+
+      - name: Test message count
+        run: tests/ccloud.sh $TOPIC
