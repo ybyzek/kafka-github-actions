@@ -3,7 +3,7 @@ name: github-action-client-local
 on: [push]
 
 env:
-  TOPIC: test3
+  TOPIC: test4
 
 
 jobs:
