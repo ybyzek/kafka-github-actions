@@ -1,6 +1,6 @@
-## Welcome
+## Overview
 
-This demo uses [GitHub Actions](https://docs.github.com/en/actions) for Apache Kafka client application, focusing on a Python producer and consumer using [Kafka Python Client](https://docs.confluent.io/kafka-clients/python/current/overview.html).
+This demo uses [GitHub Actions](https://docs.github.com/en/actions) for developing and valiating Apache Kafka client application, focusing on a Python producer and consumer using [Kafka Python Client](https://docs.confluent.io/kafka-clients/python/current/overview.html).
 
 It has a workflow that tests in 4 stages:
 
