@@ -26,7 +26,7 @@ jobs:
         run: docker build --build-arg CONFIG=librdkafka.unit.config --build-arg TOPIC=$TOPIC -t python-app .
 
       - name: Run Kafka client app to local cluster
-        run: docker run -t --net kafka-github-actions_default --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+        run: docker run -t --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
   local:
 
@@ -102,10 +102,10 @@ jobs:
           commit: 'false'
 
       - name: Build Docker image for Kafka client app to Confluent Cloud
-        run: docker build --build-arg CONFIG=librdkafka.ccloud-avro.config --build-arg TOPIC=$TOPIC_AVRO -t python-avro-app -f Dockerfile-avro .
+        run: docker build --build-arg CONFIG=librdkafka.ccloud-avro.config --build-arg TOPIC=$TOPIC_AVRO -t python-app -f Dockerfile-avro .
 
       - name: Run Kafka client app to Confluent Cloud
-        run: docker run -t --name my-python-avro-app --rm python-avro-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+        run: docker run -t --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
         run: tests/ccloud-avro.sh $TOPIC_AVRO
