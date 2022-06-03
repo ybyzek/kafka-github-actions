@@ -5,15 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Build python Docker image
+        run: docker build --build-arg CONFIG=librdkafka.local.config -t python-app .
       - name: Run Kafka
         run: docker-compose up -d
       - name: Sleep for 30 seconds
         uses: jakejarvis/wait-action@master
         with:
           time: '30s'
-      - uses: ./.github/actions/build-client-app
-        env:
-          CONFIG: ../../librdkafka.local.config
       - uses: ./.github/actions/run-producer
       - uses: ./.github/actions/run-consumer
       - run: echo "This job's status is ${{ job.status }}."
