@@ -7,3 +7,5 @@ COPY *.py ./
 
 ARG CONFIG
 COPY $CONFIG ./librdkafka.config
+
+CMD ./producer.py -f ./librdkafka.config -t test1 && timeout 10 ./consumer.py -f ./librdkafka.config -t test1
