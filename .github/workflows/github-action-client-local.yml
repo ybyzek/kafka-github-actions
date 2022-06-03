@@ -1,14 +1,22 @@
 name: github-action-client-local
+
 on: [push]
+
 jobs:
+
   build:
+
     runs-on: ubuntu-latest
+
+    env:
+      TOPIC: test3
+
     steps:
 
       - uses: actions/checkout@v2
 
       - name: Build python Docker image
-        run: docker build --build-arg CONFIG=librdkafka.local.config -t python-app .
+        run: docker build --build-arg CONFIG=librdkafka.local.config --build-arg TOPIC=$TOPIC -t python-app .
 
       - name: Start Kafka
         run: docker-compose up -d
@@ -22,4 +30,4 @@ jobs:
         run: docker run -t --net kafka-github-actions_default --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
-        run: tests/local.sh
+        run: tests/local.sh $TOPIC
