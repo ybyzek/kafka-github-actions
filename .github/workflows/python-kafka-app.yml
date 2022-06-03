@@ -26,6 +26,8 @@ jobs:
 
     steps:
 
+      - uses: actions/checkout@v2
+
       - name: Start Kafka
         run: docker-compose up -d
 
