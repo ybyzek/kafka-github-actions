@@ -19,8 +19,13 @@ jobs:
       - name: Build Docker image for Kafka client app to local Kafka cluster
         run: docker build --build-arg CONFIG=librdkafka.local.config --build-arg TOPIC=$TOPIC -t python-app .
 
+      - name: wget
+        uses: wei/wget@v1
+        with:
+          args: -qO- https://github.com/confluentinc/cp-all-in-one/blob/latest/cp-all-in-one/docker-compose.yml
+
       - name: Start Kafka
-        run: docker-compose up -d
+        run: docker-compose up -d zookeeper broker
 
       - name: Sleep for 20 seconds
         uses: jakejarvis/wait-action@master
