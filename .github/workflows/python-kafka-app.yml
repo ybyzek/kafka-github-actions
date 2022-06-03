@@ -1,9 +1,9 @@
-name: github-action-client-local
+name: python-kafka-app
 
 on: [push]
 
 env:
-  TOPIC: test4
+  TOPIC: test1
 
 
 jobs:
