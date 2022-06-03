@@ -49,12 +49,12 @@ jobs:
           CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
           CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
         with:
-          from_file: 'librdkafka.ccloud.properties'
-          to_file: 'librdkafka.ccloud.properties'
+          from_file: 'librdkafka.ccloud.config'
+          to_file: 'librdkafka.ccloud.config'
           commit: 'false'
 
       - name: Build Docker image for Kafka client app to Confluent Cloud
         run: docker build --build-arg CONFIG=librdkafka.ccloud.config --build-arg TOPIC=$TOPIC -t python-app .
 
       - name: Run Kafka client app to Confluent Cloud
-        run: docker run -t --net kafka-github-actions_default --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+        run: docker run -t --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
