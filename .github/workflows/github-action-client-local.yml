@@ -13,6 +13,8 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '30s'
-      - uses: ./.github/actions/run-producer
-      - uses: ./.github/actions/run-consumer
+      - name: Run producer
+        run: docker run -it --net kafka-github-actions_default --name my-python-app --rm python-app bash -c './producer.py -f ./librdkafka.config -t test1'
+      - name: Run consumer
+        run: docker run -it --net kafka-github-actions_default --name my-python-app --rm python-app bash -c './consumer.py -f ./librdkafka.config -t test1'
       - run: echo "This job's status is ${{ job.status }}."
