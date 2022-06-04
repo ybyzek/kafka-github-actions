@@ -2,7 +2,7 @@
 
 This demo uses [GitHub Actions](https://docs.github.com/en/actions) for developing and valiating Apache Kafka client application, focusing on a Python producer and consumer using [Kafka Python Client](https://docs.confluent.io/kafka-clients/python/current/overview.html).
 
-It has a workflow that demonstrates a few capabilities:
+It has a [GitHub Actions workflow](.github/workflows/python-kafka-app.yml) that demonstrates a few capabilities:
 
 - Build Docker image
 - Unit test
@@ -29,4 +29,4 @@ CONFLUENT_SCHEMA_REGISTRY_URL
 CONFLUENT_BASIC_AUTH_USER_INFO
 ```
 
-3. Clone this repository and push a change to see the [GitHub Actions workflow](.github/workflows/python-kafka-app.yml) in action.
+3. Clone this repository and push a change to see the [workflow](.github/workflows/python-kafka-app.yml) in action.
