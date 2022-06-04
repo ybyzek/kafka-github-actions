@@ -59,7 +59,7 @@ jobs:
       - name: Run Kafka client app to local cluster
         run: |
            ls .
-           ls /
+           ls -alrt ./producer.py
            ./producer.py -f $CONFIG -t $TOPIC
            timeout 10s ./consumer.py -f $CONFIG -t $TOPIC
 
