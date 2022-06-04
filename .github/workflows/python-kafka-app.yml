@@ -17,8 +17,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+
     permissions:
-      contents: read
       packages: write
 
     steps:
@@ -29,7 +29,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ybyzek
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
@@ -37,7 +37,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ybyzek/python-app
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
   unit:
 
