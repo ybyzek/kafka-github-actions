@@ -45,15 +45,14 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ybyzek/python-app
 
   unit:
 
     needs: build
 
     container:
-      image: ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
+      image: ghcr.io/ybyzek/python-app
       env:
         CONFIG: librdkafka.unit.config
         TOPIC: ${TOPIC}
