@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run Kafka client app unit test
-        uses: ./.github/workflows/run-producer.yml
+        uses: ./.github/actions/run-producer/action.yml
         with:
           config: librdkafka.unit.config
           topic: $TOPIC
