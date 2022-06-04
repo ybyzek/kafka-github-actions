@@ -59,7 +59,7 @@ jobs:
 
       - name: Run Kafka client app to local cluster
         run: |
-           ls /
+           ls -alrt /__w
            ls -alrt /etc/librdkafka.config
            ls -alrt /usr/bin/producer.py
            ls -alrt /etc/librdkafka.config
