@@ -128,6 +128,17 @@ def parse_args():
                           dest="topic",
                           help="topic name",
                           required=True)
+    optional = parser.add_argument_group('optional arguments')
+    optional.add_argument('-s',
+                          dest="schema",
+                          help="path to avsc schema file",
+                          required=False)
+    optional.add_argument('-e',
+                          dest="expected_pass",
+                          action='store_false',
+                          default=True,
+                          help="expected test result",
+                          required=False)
     args = parser.parse_args()
 
     return args
