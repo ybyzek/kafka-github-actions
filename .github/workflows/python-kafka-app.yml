@@ -51,7 +51,7 @@ jobs:
 
       - name: Run Kafka client app unit test
         run: |
-          docker run -t -e TOPIC:$TOPIC --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'echo "topic: $TOPIC" && /usr/bin/producer.py -f /etc/librdkafka.unit.config -t $TOPIC'
+          docker run -t -e TOPIC=$TOPIC --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'echo "topic: $TOPIC" && /usr/bin/producer.py -f /etc/librdkafka.unit.config -t $TOPIC'
 
   local:
 
@@ -78,8 +78,8 @@ jobs:
 
       - name: Run Kafka client app to local cluster
         run: |
-          docker run -t -e TOPIC:$TOPIC --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.local.config -t $TOPIC'
-          docker run -t -e TOPIC:$TOPIC --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.local.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+          docker run -t -e TOPIC=$TOPIC --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.local.config -t $TOPIC'
+          docker run -t -e TOPIC=$TOPIC --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.local.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
         run: tests/local.sh $TOPIC
@@ -102,8 +102,8 @@ jobs:
 
       - name: Run Kafka client app to Confluent Cloud
         run: |
-          docker run -t -e TOPIC:$TOPIC --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.ccloud.config -t $TOPIC'
-          docker run -t -e TOPIC:$TOPIC --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.ccloud.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+          docker run -t -e TOPIC=$TOPIC --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.ccloud.config -t $TOPIC'
+          docker run -t -e TOPIC=$TOPIC --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.ccloud.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
         run: tests/ccloud.sh $TOPIC
@@ -126,8 +126,8 @@ jobs:
 
       - name: Run Kafka client app to Confluent Cloud
         run: |
-          docker run -t -e TOPIC:$TOPIC_AVRO --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.ccloud-avro.config -t $TOPIC'
-          docker run -t -e TOPIC:$TOPIC_AVRO --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.ccloud-avro.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+          docker run -t -e TOPIC=$TOPIC_AVRO --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.ccloud-avro.config -t $TOPIC'
+          docker run -t -e TOPIC=$TOPIC_AVRO --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.ccloud-avro.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
         run: tests/ccloud-avro.sh $TOPIC_AVRO
