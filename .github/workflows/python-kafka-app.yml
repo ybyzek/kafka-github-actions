@@ -45,7 +45,7 @@ jobs:
     needs: build
 
     name: Run Kafka client app unit test
-    uses: ./.github/actions/run-producer/action.yml
+    uses: ./.github/actions/run-producer/action.yml@latest
     with:
       config: librdkafka.unit.config
       topic: $TOPIC
