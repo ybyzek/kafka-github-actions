@@ -11,6 +11,7 @@ env:
   TOPIC_AVRO: test2-avro
   CONFLUENT_SCHEMA_REGISTRY_URL: ${{ secrets.CONFLUENT_SCHEMA_REGISTRY_URL }}
   CONFLUENT_BASIC_AUTH_USER_INFO: ${{ secrets.CONFLUENT_BASIC_AUTH_USER_INFO }}
+  GITHUB_PATH: ${{ env.GITHUB_PATH }}
 
 jobs:
 
@@ -50,7 +51,7 @@ jobs:
       env:
         TOPIC: ${TOPIC}
       volumes:
-        - ${{ env.GITHUB_PATH }}/librdkafka.unit.config:/etc/librdkafka.config
+        - ${{ GITHUB_PATH }}/librdkafka.unit.config:/etc/librdkafka.config
       credentials:
         username: ybyzek
         password: ${{ secrets.GITHUB_TOKEN }}
