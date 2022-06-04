@@ -64,8 +64,8 @@ jobs:
            #ls -alrt /work
            ls -alrt /usr/bin/producer.py
            #ls -alrt /work/librdkafka.config
-           /usr/bin/producer.py -f /etc/librdkafka.unit.config -t $TOPIC
-           timeout 10s /bin/consumer.py -f /etc/librdkafka.unit.config -t $TOPIC
+           /usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC
+           timeout 10s /bin/consumer.py -f /etc/librdkafka.config -t $TOPIC
 
   local:
 
