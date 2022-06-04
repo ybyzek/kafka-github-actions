@@ -4,20 +4,20 @@ This demo uses [GitHub Actions](https://docs.github.com/en/actions) for developi
 
 It has a [GitHub Actions workflow](.github/workflows/python-kafka-app.yml) that demonstrates a few capabilities:
 
-- Build Docker image
-- Unit test
+- Build Docker image for the client application
+- Unit test with [rdkafka mock](https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_mock.h)
 - Local test with [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
-- Confluent Cloud
-- Confluent Cloud with Schema Registry
-- Schema compatibility checking
+- Confluent Cloud test
+- Confluent Cloud with Schema Registry and Avro test
+- Schema compatibility check
 
-![image](images/jobs.png)
+![image](images/jobs-graphic.png)
 
-## Setup
+## Instructions
 
 1. Provision a fully-managed Kafka cluster and Schema Registry on Confluent Cloud. You can follow the [quickstart](https://developer.confluent.io/quickstart/kafka-on-confluent-cloud/) or use [ccloud-stack](https://docs.confluent.io/platform/current/tutorials/examples/ccloud/docs/ccloud-stack.html) to programmatically create a stack of fully managed services in Confluent Cloud.
 
-2. In your GitHub account, create [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) for:
+2. In your GitHub account, create [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) for your Confluent Cloud cluster:
 
 ```shell
 # Confluent Cloud Kafka cluster
@@ -29,4 +29,6 @@ CONFLUENT_SCHEMA_REGISTRY_URL
 CONFLUENT_BASIC_AUTH_USER_INFO
 ```
 
-3. Clone this repository and push a change to see the [workflow](.github/workflows/python-kafka-app.yml) in action.
+3. Fork this repository and push a change to see the [workflow](.github/workflows/python-kafka-app.yml) in action.
+
+![image](images/jobs-text.png)
