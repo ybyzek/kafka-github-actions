@@ -48,7 +48,7 @@ jobs:
     uses: ./.github/workflows/run-producer.yml
     with:
       config: librdkafka.unit.config
-      topic: t123
+      topic: $TOPIC
 
   local:
 
