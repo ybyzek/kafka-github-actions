@@ -61,7 +61,8 @@ jobs:
       - name: Run Kafka client app to local cluster
         run: |
            #ls -alrt /etc/librdkafka.config
-           ls -alrt /work
+           ls -alrt ${{ github.workspace }}
+           ls -alrt ${{ github.workspace }}/librdkafka.unit.config
            ls -alrt /usr/bin/producer.py
            ls -alrt /work/librdkafka.config
            /usr/bin/producer.py -f /work/librdkafka.config -t $TOPIC
