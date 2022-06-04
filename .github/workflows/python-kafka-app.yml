@@ -47,7 +47,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: CONFIG=librdkafka.unit.config,TOPIC=$TOPIC
+          build-args: |
+             CONFIG=librdkafka.unit.config
+             TOPIC=$TOPIC
 
   unit:
 
