@@ -47,8 +47,8 @@ jobs:
     name: Run Kafka client app unit test
     uses: ./.github/workflows/run-producer.yml
     with:
-      config: librdkafka.unit.config
-      topic: $TOPIC
+      config: ${{ env.DEST_WORKSPACE }}/librdkafka.unit.config
+      topic: ${{ env.TOPIC }}
 
   local:
 
