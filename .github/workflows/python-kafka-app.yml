@@ -51,7 +51,7 @@ jobs:
 
       - name: Run Kafka client app unit test
         run: |
-          docker run -t -e TOPIC=$TOPIC --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'echo "topic: $TOPIC" && /usr/bin/producer.py -f /etc/librdkafka.unit.config -t $TOPIC'
+          docker run -t -e TOPIC=$TOPIC -v librdkafka.unit.config:/etc/librdkafka.config --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'echo "topic: $TOPIC" && /usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
 
   local:
 
