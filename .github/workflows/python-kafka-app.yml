@@ -58,7 +58,6 @@ jobs:
       - name: Run Kafka client app to local cluster
         run: |
            /usr/bin/producer.py -f /etc/librdkafka.unit.config -t $TOPIC
-           timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.unit.config -t $TOPIC
 
   local:
 
@@ -86,7 +85,7 @@ jobs:
       - name: Run Kafka client app to local cluster
         run: |
           docker run -t --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.local.config -t $TOPIC'
-          docker run -t --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/consumer.py -f /etc/librdkafka.local.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+          docker run -t --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.local.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
         run: tests/local.sh $TOPIC
