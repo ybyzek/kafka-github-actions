@@ -44,18 +44,11 @@ jobs:
 
     needs: build
 
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - uses: actions/checkout@v2
-
-      - name: Run Kafka client app unit test
-        run: |
-          docker run -t -e TOPIC=$TOPIC \
-                        -v ${DEST_WORKSPACE}/librdkafka.unit.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
-                        bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
+    name: Run Kafka client app unit test
+     uses: ./.github/workflows/run-producer.yml
+     with:
+       config: librdkafka.unit.config
+       topic: mytopic
 
   local:
 
