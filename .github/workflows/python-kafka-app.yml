@@ -51,11 +51,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run Kafka client app unit test
-        run: |
-          docker run -t -e TOPIC=$TOPIC \
-                        -v ${DEST_WORKSPACE}/librdkafka.unit.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
-                        bash -c 'echo "topic: $TOPIC" && /usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
+        uses: run-producer.yml
+        with:
+          config: librdkafka.unit.config
+          topic: $TOPIC
 
   local:
 
