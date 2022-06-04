@@ -50,8 +50,8 @@ jobs:
       env:
         TOPIC: ${TOPIC}
       volumes:
-        - ${{ github.workspace }}/librdkafka.unit.config:/etc/librdkafka.config
-        #- ${{ github.workspace }}:/work
+        #- ${{ github.workspace }}/librdkafka.unit.config:/etc/librdkafka.config
+        - ${{ github.workspace }}:/work
       credentials:
         username: ybyzek
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -60,12 +60,12 @@ jobs:
 
       - name: Run Kafka client app to local cluster
         run: |
-           ls -alrt /etc/librdkafka.config
-           #ls -alrt /work
+           #ls -alrt /etc/librdkafka.config
+           ls -alrt /work
            ls -alrt /usr/bin/producer.py
-           #ls -alrt /work/librdkafka.config
-           /usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC
-           timeout 10s /bin/consumer.py -f /etc/librdkafka.config -t $TOPIC
+           ls -alrt /work/librdkafka.config
+           /usr/bin/producer.py -f /work/librdkafka.config -t $TOPIC
+           timeout 10s /bin/consumer.py -f /work/librdkafka.config -t $TOPIC
 
   local:
 
