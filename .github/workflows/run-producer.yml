@@ -26,6 +26,6 @@ jobs:
       - name: Run Kafka client app unit test
         run: |
           docker run -t -e TOPIC=${{inputs.topic}} \
-                        -v ${DEST_WORKSPACE}/${{inputs.config}}:/etc/librdkafka.config \
+                        -v ${DEST_WORKSPACE}/configs/${{inputs.config}}:/etc/librdkafka.config \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c 'echo "topic: $TOPIC" && echo "topic2: ${{inputs.topic}}" && echo "config: ${{ inputs.config }}" && /usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
