@@ -11,8 +11,6 @@ env:
   TOPIC_AVRO: test2-avro
   CONFLUENT_SCHEMA_REGISTRY_URL: ${{ secrets.CONFLUENT_SCHEMA_REGISTRY_URL }}
   CONFLUENT_BASIC_AUTH_USER_INFO: ${{ secrets.CONFLUENT_BASIC_AUTH_USER_INFO }}
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
 
@@ -30,8 +28,8 @@ jobs:
       - name: Log in to the Container registry
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
+          registry: ghcr.io
+          username: ybyzek
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
@@ -53,7 +51,7 @@ jobs:
         CONFIG: librdkafka.unit.config
         TOPIC: ${TOPIC}
       credentials:
-        username: ${{ github.actor }}
+        username: ybyzek
         password: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
