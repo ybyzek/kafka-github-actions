@@ -22,6 +22,7 @@ jobs:
 
       - name: Run Kafka client app unit test
         run: |
+          echo "outsidetopic: ${{inputs.topic}}"
           docker run -t -e TOPIC=${{inputs.topic}} \
                         -v ${DEST_WORKSPACE}/${{ inputs.config }}:/etc/librdkafka.config \
                         --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
