@@ -44,13 +44,11 @@ jobs:
 
     needs: build
 
-    runs-on: ubuntu-latest
-
-      name: Run Kafka client app unit test
-      uses: ./.github/actions/run-producer/action.yml
-      with:
-        config: librdkafka.unit.config
-        topic: $TOPIC
+    name: Run Kafka client app unit test
+    uses: ./.github/actions/run-producer/action.yml
+    with:
+      config: librdkafka.unit.config
+      topic: $TOPIC
 
   local:
 
