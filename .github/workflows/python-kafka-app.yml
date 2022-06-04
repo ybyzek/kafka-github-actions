@@ -37,7 +37,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/ybyzek/kafka-github-actions:latest
+          tags: ghcr.io/${{ github.actor }}/python-app:latest
 
   unit:
 
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/ybyzek/kafka-github-actions:latest
+      image: ghcr.io/ybyzek/python-app:latest
       env:
         CONFIG: librdkafka.unit.config
         TOPIC: ${TOPIC}
@@ -58,6 +58,8 @@ jobs:
 
       - name: Run Kafka client app to local cluster
         run: |
+           ls .
+           ls /
            ./producer.py -f $CONFIG -t $TOPIC
            timeout 10s ./consumer.py -f $CONFIG -t $TOPIC
 
