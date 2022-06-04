@@ -29,7 +29,3 @@ CONFLUENT_BASIC_AUTH_USER_INFO
 ```
 
 3. Clone this repository and push a change to see the [GitHub Actions workflow](.github/workflows/python-kafka-app.yml) in action.
-
-## To do
-
-- Convert docker runs for produce/consume to reusable workflow ([WIP](.github/workflows/run-producer.yml), problem with topic name)
