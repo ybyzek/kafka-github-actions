@@ -59,9 +59,10 @@ jobs:
 
       - name: Run Kafka client app to local cluster
         run: |
-           ls /bin/
-           ls -alrt /bin/producer.py
-           /bin/producer.py -f /etc/librdkafka.config -t $TOPIC
+           ls /usr/bin/
+           ls -alrt /usr/bin/producer.py
+           ls -alrt /etc/librdkafka.config
+           /usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC
            timeout 10s /bin/consumer.py -f /etc/librdkafka.config -t $TOPIC
 
   local:
