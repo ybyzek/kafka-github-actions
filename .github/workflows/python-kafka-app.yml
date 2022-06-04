@@ -58,7 +58,7 @@ jobs:
       - name: Run Kafka client app to local cluster
         run: |
            /usr/bin/producer.py -f /etc/librdkafka.unit.config -t $TOPIC
-           timeout 10s /bin/consumer.py -f /etc/librdkafka.unit.config -t $TOPIC
+           timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.unit.config -t $TOPIC
 
   local:
 
@@ -69,9 +69,6 @@ jobs:
     steps:
 
       - uses: actions/checkout@v2
-
-      - name: Build Docker image for Kafka client app to local Kafka cluster
-        run: docker build --build-arg CONFIG=librdkafka.local.config --build-arg TOPIC=$TOPIC -t python-app .
 
       - name: Get cp-all-in-one
         uses: wei/wget@v1
@@ -87,7 +84,9 @@ jobs:
           time: '20s'
 
       - name: Run Kafka client app to local cluster
-        run: docker run -t --net kafka-github-actions_default --name my-python-app --rm python-app || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+        run: |
+          docker run -t --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.local.config -t $TOPIC'
+          docker run -t --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/consumer.py -f /etc/librdkafka.local.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
         run: tests/local.sh $TOPIC
