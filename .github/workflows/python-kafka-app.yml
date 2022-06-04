@@ -48,8 +48,9 @@ jobs:
     container:
       image: ghcr.io/ybyzek/python-app:latest
       env:
-        CONFIG: librdkafka.unit.config
         TOPIC: ${TOPIC}
+      volumes:
+        librdkafka.unit.config:/etc/librdkafka.config
       credentials:
         username: ybyzek
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -58,10 +59,10 @@ jobs:
 
       - name: Run Kafka client app to local cluster
         run: |
-           ls /
-           ls -alrt /producer.py
-           ./producer.py -f $CONFIG -t $TOPIC
-           timeout 10s ./consumer.py -f $CONFIG -t $TOPIC
+           ls /bin/
+           ls -alrt /bin/producer.py
+           /bin/producer.py -f /etc/librdkafka.config -t $TOPIC
+           timeout 10s /bin/consumer.py -f /etc/librdkafka.config -t $TOPIC
 
   local:
 
