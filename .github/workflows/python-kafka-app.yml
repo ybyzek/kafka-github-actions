@@ -50,7 +50,7 @@ jobs:
       env:
         TOPIC: ${TOPIC}
       volumes:
-        librdkafka.unit.config:/etc/librdkafka.config
+        - librdkafka.unit.config:/etc/librdkafka.config
       credentials:
         username: ybyzek
         password: ${{ secrets.GITHUB_TOKEN }}
