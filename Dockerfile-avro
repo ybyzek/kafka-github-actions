@@ -4,4 +4,3 @@ COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install -U -r /tmp/requirements.txt
 
 COPY *.py /usr/bin/.
-COPY *.config /etc/.
