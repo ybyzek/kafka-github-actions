@@ -54,7 +54,7 @@ jobs:
         run: |
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/librdkafka.unit.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
 
   local:
@@ -85,12 +85,12 @@ jobs:
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/librdkafka.local.config:/etc/librdkafka.config \
                         --net kafka-github-actions_default \
-                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/librdkafka.local.config:/etc/librdkafka.config \
                         --net kafka-github-actions_default \
-                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
@@ -117,11 +117,11 @@ jobs:
         run: |
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/librdkafka.ccloud.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/librdkafka.ccloud.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
@@ -148,11 +148,11 @@ jobs:
         run: |
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/producer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO'
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
