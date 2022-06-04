@@ -36,6 +36,7 @@ if __name__ == '__main__':
     config_file = args.config_file
     topic = args.topic
     schema_new = args.schema
+    expected_pass = args.expected_pass
     conf = ccloud_lib.read_ccloud_config(config_file)
 
     schema_registry_conf = {
@@ -49,9 +50,9 @@ if __name__ == '__main__':
     schema = Schema(schema_str, schema_type='AVRO')
     subject = topic + "-value"
     is_compatible = schema_registry_client.test_compatibility(subject, schema)
-    print("Result of compatibility test for schema " + schema_new + " against subject " + subject + " : ", is_compatible)
+    print("Result of compatibility test for schema " + schema_new + " against subject " + subject + " : ", is_compatible, " (expected ", expected_pass, ")")
 
-    if is_compatible:
+    if is_compatible == expected_pass:
       sys.exit(0)
     else:
       sys.exit(1)

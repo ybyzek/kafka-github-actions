@@ -184,4 +184,4 @@ jobs:
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
-                        bash -c '/usr/bin/test_schema_compatibility.py -f /etc/librdkafka.config -t $TOPICAVRO -s /etc/Count-fail.avsc'
+                        bash -c '/usr/bin/test_schema_compatibility.py -f /etc/librdkafka.config -t $TOPICAVRO -s /etc/Count-fail.avsc -e'
