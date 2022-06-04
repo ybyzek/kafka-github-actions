@@ -1,5 +1,8 @@
 name: run-producer
 
+env:
+  DEST_WORKSPACE: ${{ github.workspace }}
+
 on:
   workflow_call:
     inputs:
@@ -24,8 +27,9 @@ jobs:
         run: |
           echo "topic: ${{inputs.topic}}"
           echo "config: ${{inputs.config}}"
+          echo "dest_workspace: ${DEST_WORKSPACE}"
           echo "ls ${DEST_WORKSPACE}/${{inputs.config}}"
-          ${DEST_WORKSPACE}/${{inputs.config}}
+          ls ${DEST_WORKSPACE}/${{inputs.config}}
           docker run -t -e TOPIC=${{inputs.topic}} \
                         -v ${DEST_WORKSPACE}/${{inputs.config}}:/etc/librdkafka.config \
                         --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
