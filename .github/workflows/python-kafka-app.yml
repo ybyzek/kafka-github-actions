@@ -102,8 +102,8 @@ jobs:
 
       - name: Run Kafka client app to Confluent Cloud
         run: |
-          docker run -t -e TOPIC=$TOPIC --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.ccloud.config -t $TOPIC'
-          docker run -t -e TOPIC=$TOPIC --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.ccloud.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+          docker run -t -e TOPIC=$TOPIC -v ${{ GITHUB_WORKSPACE }}/librdkafka.ccloud.config:/etc/librdkafka.ccloud.config --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c '/usr/bin/producer.py -f /etc/librdkafka.ccloud.config -t $TOPIC'
+          docker run -t -e TOPIC=$TOPIC -v ${{ GITHUB_WORKSPACE }}/librdkafka.ccloud.config:/etc/librdkafka.ccloud.config --name my-python-app --rm ghcr.io/ybyzek/python-app:latest bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.ccloud.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
         run: tests/ccloud.sh $TOPIC
