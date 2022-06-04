@@ -158,3 +158,30 @@ jobs:
 
       - name: Test message count
         run: tests/ccloud-avro.sh $TOPICAVRO
+
+  ccloud-schema-compatibility:
+
+    needs: ccloud-avro
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - uses: franzbischoff/replace_envs@v1
+        with:
+          from_file: 'librdkafka.ccloud-avro.config'
+          to_file: 'librdkafka.ccloud-avro.config'
+          commit: 'false'
+
+      - name: Test compatibility of new schema
+        run: |
+          docker run -t -e TOPICAVRO=$TOPICAVRO \
+                        -v ${DEST_WORKSPACE}/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        bash -c '/usr/bin/test_schema_compatibility.py -f /etc/librdkafka.config -t $TOPICAVRO -s /etc/Count-pass.avsc'
+          docker run -t -e TOPICAVRO=$TOPICAVRO \
+                        -v ${DEST_WORKSPACE}/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        bash -c '/usr/bin/test_schema_compatibility.py -f /etc/librdkafka.config -t $TOPICAVRO -s /etc/Count-fail.avsc'
