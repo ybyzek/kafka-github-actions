@@ -3,12 +3,12 @@ name: python-kafka-app
 on: [push]
 
 env:
-  TOPIC: test1
+  TOPIC: t1
   CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
   CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
   CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
   # Confluent Cloud Schema Registry and AVRO
-  TOPIC_AVRO: test2-avro
+  TOPICAVRO: t2-avro
   CONFLUENT_SCHEMA_REGISTRY_URL: ${{ secrets.CONFLUENT_SCHEMA_REGISTRY_URL }}
   CONFLUENT_BASIC_AUTH_USER_INFO: ${{ secrets.CONFLUENT_BASIC_AUTH_USER_INFO }}
   DEST_WORKSPACE: ${{ github.workspace }}
@@ -52,8 +52,10 @@ jobs:
 
       - name: Run Kafka client app unit test
         run: |
-          docker run -t -e TOPIC=$TOPIC -v ${DEST_WORKSPACE}/librdkafka.unit.config:/etc/librdkafka.config --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
-                 bash -c 'echo "topic: $TOPIC" && /usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
+          docker run -t -e TOPIC=$TOPIC \
+                        -v ${DEST_WORKSPACE}/librdkafka.unit.config:/etc/librdkafka.config \
+                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        bash -c 'echo "topic: $TOPIC" && /usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
 
   local:
 
@@ -80,10 +82,17 @@ jobs:
 
       - name: Run Kafka client app to local cluster
         run: |
-          docker run -t -e TOPIC=$TOPIC -v ${DEST_WORKSPACE}/librdkafka.local.config:/etc/librdkafka.config --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
-                 bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
-          docker run -t -e TOPIC=$TOPIC -v ${DEST_WORKSPACE}/librdkafka.local.config:/etc/librdkafka.config --net kafka-github-actions_default --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
-                 bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+          docker run -t -e TOPIC=$TOPIC \
+                        -v ${DEST_WORKSPACE}/librdkafka.local.config:/etc/librdkafka.config \
+                        --net kafka-github-actions_default \
+                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
+          docker run -t -e TOPIC=$TOPIC \
+                        -v ${DEST_WORKSPACE}/librdkafka.local.config:/etc/librdkafka.config \
+                        --net kafka-github-actions_default \
+                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' \
+                          || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
         run: tests/local.sh $TOPIC
@@ -106,10 +115,15 @@ jobs:
 
       - name: Run Kafka client app to Confluent Cloud
         run: |
-          docker run -t -e TOPIC=$TOPIC -v ${DEST_WORKSPACE}/librdkafka.ccloud.config:/etc/librdkafka.config -v librdkafka.ccloud.config:/etc/librdkafka.ccloud.config --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
-                 bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
-          docker run -t -e TOPIC=$TOPIC -v ${DEST_WORKSPACE}/librdkafka.ccloud.config:/etc/librdkafka.config --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
-                 bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+          docker run -t -e TOPIC=$TOPIC \
+                        -v ${DEST_WORKSPACE}/librdkafka.ccloud.config:/etc/librdkafka.config \
+                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
+          docker run -t -e TOPIC=$TOPIC \
+                        -v ${DEST_WORKSPACE}/librdkafka.ccloud.config:/etc/librdkafka.config \
+                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' \
+                          || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
         run: tests/ccloud.sh $TOPIC
@@ -132,10 +146,15 @@ jobs:
 
       - name: Run Kafka client app to Confluent Cloud
         run: |
-          docker run -t -e TOPIC=$TOPIC_AVRO -v ${DEST_WORKSPACE}/librdkafka.ccloud-avro.config:/etc/librdkafka.config --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
-                 bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
-          docker run -t -e TOPIC=$TOPIC_AVRO -v ${DEST_WORKSPACE}/librdkafka.ccloud-avro.config:/etc/librdkafka.config --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
-                 bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+          docker run -t -e TOPICAVRO=$TOPICAVRO \
+                        -v ${DEST_WORKSPACE}/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
+                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPICAVRO'
+          docker run -t -e TOPICAVRO=$TOPICAVRO \
+                        -v ${DEST_WORKSPACE}/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
+                        --name my-python-app --rm ghcr.io/ybyzek/python-app:latest \
+                        bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPICAVRO' \
+                          || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Test message count
-        run: tests/ccloud-avro.sh $TOPIC_AVRO
+        run: tests/ccloud-avro.sh $TOPICAVRO
