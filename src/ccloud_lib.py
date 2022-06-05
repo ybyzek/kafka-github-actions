@@ -148,6 +148,7 @@ def read_ccloud_config(config_file):
     """Read Confluent Cloud configuration for librdkafka clients"""
 
     conf = {}
+    conf.setdefault('basic.auth.user.info', 'dummy:dummy')
     with open(config_file) as fh:
         for line in fh:
             line = line.strip()
