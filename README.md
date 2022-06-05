@@ -2,14 +2,14 @@
 
 This demo uses [GitHub Actions](https://docs.github.com/en/actions) for developing and valiating Apache Kafka client application, focusing on a Python producer and consumer using [Kafka Python Client](https://docs.confluent.io/kafka-clients/python/current/overview.html).
 
-It has a [GitHub Actions workflow](.github/workflows/python-kafka-app.yml) that demonstrates a few capabilities:
+The code defines a [GitHub Actions workflow](.github/workflows/python-kafka-app.yml) to demonstrate a few capabilities:
 
 - Build Docker image for the client application
 - Unit test with [rdkafka mock](https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_mock.h)
 - Local test using [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
-- Local test with Schema Registry and Avro test using [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
+- Local test with Schema Registry and Avro using [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
 - Confluent Cloud test
-- Confluent Cloud with Schema Registry and Avro test
+- Confluent Cloud test with Schema Registry and Avro
 - Schema compatibility check
 
 ![image](images/jobs-graphic.png)
