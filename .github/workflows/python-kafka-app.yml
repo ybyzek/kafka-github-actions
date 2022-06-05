@@ -67,18 +67,8 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Get cp-all-in-one
-        uses: wei/wget@v1
-        with:
-          args: -O docker-compose.yml https://raw.githubusercontent.com/confluentinc/cp-all-in-one/latest/cp-all-in-one/docker-compose.yml
-
-      - name: Start local Kafka cluster
-        run: docker-compose up -d zookeeper broker
-
-      - name: Sleep for 20 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '20s'
+      - name: Start Confluent Platform
+        uses: ./.github/actions/cp-all-in-one
 
       - name: Run Kafka client app to local cluster
         run: |
