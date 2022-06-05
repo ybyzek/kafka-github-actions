@@ -67,19 +67,21 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Start Confluent Platform
+      - name: Run Confluent Platform
         uses: ./.github/actions/cp-all-in-one
+        with:
+          service: kafka
 
       - name: Run Kafka client app to local cluster
         run: |
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local.config:/etc/librdkafka.config \
-                        --net kafka-github-actions_default \
+                        --net workspace_default \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local.config:/etc/librdkafka.config \
-                        --net kafka-github-actions_default \
+                        --net workspace_default \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
@@ -97,29 +99,21 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Get cp-all-in-one
-        uses: wei/wget@v1
+      - name: Run Confluent Platform
+        uses: ./.github/actions/cp-all-in-one
         with:
-          args: -O docker-compose.yml https://raw.githubusercontent.com/confluentinc/cp-all-in-one/latest/cp-all-in-one/docker-compose.yml
-
-      - name: Start local Kafka cluster and Schema Registry
-        run: docker-compose up -d zookeeper broker schema-registry
-
-      - name: Sleep for 20 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '20s'
+          service: schema-registry
 
       - name: Run Kafka client app to local cluster
         run: |
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local-avro.config:/etc/librdkafka.config \
-                        --net kafka-github-actions_default \
+                        --net workspace_default \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/producer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO'
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local-avro.config:/etc/librdkafka.config \
-                        --net kafka-github-actions_default \
+                        --net workspace_default \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
