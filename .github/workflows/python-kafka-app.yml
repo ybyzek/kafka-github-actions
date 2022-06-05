@@ -97,6 +97,46 @@ jobs:
       - name: Test message count
         run: tests/local.sh $TOPIC
 
+  local-avro:
+
+    needs: unit
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Get cp-all-in-one
+        uses: wei/wget@v1
+        with:
+          args: -O docker-compose.yml https://raw.githubusercontent.com/confluentinc/cp-all-in-one/latest/cp-all-in-one/docker-compose.yml
+
+      - name: Start local Kafka cluster and Schema Registry
+        run: docker-compose up -d zookeeper broker schema-registry
+
+      - name: Sleep for 20 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '20s'
+
+      - name: Run Kafka client app to local cluster
+        run: |
+          docker run -t -e TOPICAVRO=$TOPICAVRO \
+                        -v ${DEST_WORKSPACE}/configs/librdkafka.local-avro.config:/etc/librdkafka.config \
+                        --net kafka-github-actions_default \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        bash -c '/usr/bin/producer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO'
+          docker run -t -e TOPICAVRO=$TOPICAVRO \
+                        -v ${DEST_WORKSPACE}/configs/librdkafka.local-avro.config:/etc/librdkafka.config \
+                        --net kafka-github-actions_default \
+                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        bash -c 'timeout 10s /usr/bin/consumer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO' \
+                          || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+
+      - name: Test message count
+        run: tests/local-avro.sh $TOPICAVRO
+
   ccloud:
 
     needs: local
@@ -130,7 +170,7 @@ jobs:
 
   ccloud-avro:
 
-    needs: ccloud
+    needs: local-avro
 
     runs-on: ubuntu-latest
 
