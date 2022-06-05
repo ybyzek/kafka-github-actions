@@ -4,7 +4,7 @@ on: [push]
 
 env:
   DEST_WORKSPACE: ${{ github.workspace }}
-  GITHUB_REPO: $${{ github.repository }}
+  GITHUB_REPO: ${{ github.repository }}
   TOPIC: t20
   CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
   CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
