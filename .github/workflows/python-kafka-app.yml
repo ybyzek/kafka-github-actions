@@ -3,6 +3,8 @@ name: python-kafka-app
 on: [push]
 
 env:
+  DEST_WORKSPACE: ${{ github.workspace }}
+  GITHUB_REPO: $${{ github.repository }}
   TOPIC: t20
   CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
   CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
@@ -11,7 +13,6 @@ env:
   TOPICAVRO: t21-avro
   CONFLUENT_SCHEMA_REGISTRY_URL: ${{ secrets.CONFLUENT_SCHEMA_REGISTRY_URL }}
   CONFLUENT_BASIC_AUTH_USER_INFO: ${{ secrets.CONFLUENT_BASIC_AUTH_USER_INFO }}
-  DEST_WORKSPACE: ${{ github.workspace }}
 
 jobs:
 
@@ -70,18 +71,19 @@ jobs:
       - name: Run Confluent Platform
         uses: ./.github/actions/cp-all-in-one
         with:
-          service: kafka
+          service: broker
+          network: ${GITHUB_REPO}_default
 
       - name: Run Kafka client app to local cluster
         run: |
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local.config:/etc/librdkafka.config \
-                        --net workspace_default \
+                        --net ${GITHUB_REPO}_default \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local.config:/etc/librdkafka.config \
-                        --net workspace_default \
+                        --net ${GITHUB_REPO}_default \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
@@ -103,17 +105,18 @@ jobs:
         uses: ./.github/actions/cp-all-in-one
         with:
           service: schema-registry
+          network: ${GITHUB_REPO}_default
 
       - name: Run Kafka client app to local cluster
         run: |
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local-avro.config:/etc/librdkafka.config \
-                        --net workspace_default \
+                        --net ${GITHUB_REPO}_default \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/producer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO'
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local-avro.config:/etc/librdkafka.config \
-                        --net workspace_default \
+                        --net ${GITHUB_REPO}_default \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
