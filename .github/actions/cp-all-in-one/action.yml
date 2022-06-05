@@ -7,11 +7,11 @@ inputs:
     required: false
     default: 'latest'
   service:
-    description: 'Up to which service to bring up'
+    description: 'Define service up to which to start'
     required: false
     default: ''
-  network:
-    description: 'docker network name'
+  project:
+    description: 'docker project name'
     required: false
     default: 'default'
 runs:
