@@ -6,7 +6,8 @@ It has a [GitHub Actions workflow](.github/workflows/python-kafka-app.yml) that 
 
 - Build Docker image for the client application
 - Unit test with [rdkafka mock](https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_mock.h)
-- Local test with [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
+- Local test using [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
+- Local test with Schema Registry and Avro test using [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
 - Confluent Cloud test
 - Confluent Cloud with Schema Registry and Avro test
 - Schema compatibility check
