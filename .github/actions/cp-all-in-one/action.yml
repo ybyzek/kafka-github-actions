@@ -2,22 +2,14 @@ name: 'Run Confluent cp-all-in-one'
 description: 'Setup Confluent cp-all-in-one'
 author: 'ybyzek'
 inputs:
-  cp-all-in-one version:
+  github branch version:
     description: 'GitHub branch of cp-all-in-one to use'
     required: false
     default: 'latest'
-  service to bring up:
+  service:
     description: 'Up to which service to bring up'
     required: false
     default: ''
-  kafka port:
-    description: 'The port of Kafka host'
-    required: false
-    default: 9092
-  zookeeper port:
-    description: 'The port of Zookeeper host'
-    required: false
-    default: 2181    
 runs:
   using: 'docker'
   image: 'Dockerfile'
