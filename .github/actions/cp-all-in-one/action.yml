@@ -11,7 +11,7 @@ inputs:
     required: false
     default: ''
   project:
-    description: 'docker project name used for network name'
+    description: 'docker project name used to set network name'
     required: false
     default: 'default'
 runs:
