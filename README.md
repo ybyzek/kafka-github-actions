@@ -22,7 +22,7 @@ The code defines a GitHub Actions workflow called [python-kafka-app](.github/wor
 
 ## Instructions
 
-1. Provision a Kafka cluster and Schema Registry on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/), and create an API key and secret for the application. You can follow the [quickstart](https://developer.confluent.io/quickstart/kafka-on-confluent-cloud/) or use [ccloud-stack](https://docs.confluent.io/platform/current/tutorials/examples/ccloud/docs/ccloud-stack.html) to programmatically create a stack of fully managed services in Confluent Cloud.
+1. Provision a Kafka cluster, enable Schema Registry and create an API key and secret on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/). Use the [quickstart](https://developer.confluent.io/quickstart/kafka-on-confluent-cloud/), [Confluent Terraform Provider](https://registry.terraform.io/providers/confluentinc/confluent/0.9.0), or [ccloud-stack](https://docs.confluent.io/platform/current/tutorials/examples/ccloud/docs/ccloud-stack.html).
 
 2. In your GitHub account, create [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) for your Confluent Cloud cluster and credentials:
 
