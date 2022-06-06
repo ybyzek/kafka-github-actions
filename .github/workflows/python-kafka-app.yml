@@ -4,7 +4,6 @@ on: [push]
 
 env:
   DEST_WORKSPACE: ${{ github.workspace }}
-  PROJECT: dockernet
   NETWORK: dockernet_default
   TOPIC: t20
   CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
@@ -73,7 +72,6 @@ jobs:
         uses: ./.github/actions/cp-all-in-one
         with:
           service: broker
-          project: ${PROJECT}
 
       - name: Run Kafka client app to local cluster
         run: |
@@ -106,7 +104,6 @@ jobs:
         uses: ./.github/actions/cp-all-in-one
         with:
           service: schema-registry
-          project: ${PROJECT}
 
       - name: Run Kafka client app to local cluster
         run: |

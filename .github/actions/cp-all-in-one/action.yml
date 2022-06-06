@@ -13,7 +13,7 @@ inputs:
   project:
     description: 'docker project name used to set network name'
     required: false
-    default: 'default'
+    default: 'dockernet'
 runs:
   using: 'docker'
   image: 'Dockerfile'
