@@ -1,6 +1,6 @@
 ## Overview
 
-This demo uses [GitHub Actions](https://docs.github.com/en/actions) for developing and valiating Apache Kafka client application, focusing on a Python producer and consumer using [Kafka Python Client](https://docs.confluent.io/kafka-clients/python/current/overview.html).
+This demo uses GitHub Actions for developing and valiating Apache Kafka client application, focusing on a Python producer and consumer using Kafka Python Client.
 
 The code defines a GitHub Actions workflow called [python-kafka-app](.github/workflows/python-kafka-app.yml) with jobs to demonstrate a few capabilities:
 
@@ -16,7 +16,7 @@ The code defines a GitHub Actions workflow called [python-kafka-app](.github/wor
 
 ## Instructions
 
-1. Provision a fully-managed Kafka cluster and Schema Registry on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/), and create an API key and secret for the application. You can follow the [quickstart](https://developer.confluent.io/quickstart/kafka-on-confluent-cloud/) or use [ccloud-stack](https://docs.confluent.io/platform/current/tutorials/examples/ccloud/docs/ccloud-stack.html) to programmatically create a stack of fully managed services in Confluent Cloud.
+1. Provision a Kafka cluster and Schema Registry on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/), and create an API key and secret for the application. You can follow the [quickstart](https://developer.confluent.io/quickstart/kafka-on-confluent-cloud/) or use [ccloud-stack](https://docs.confluent.io/platform/current/tutorials/examples/ccloud/docs/ccloud-stack.html) to programmatically create a stack of fully managed services in Confluent Cloud.
 
 2. In your GitHub account, create [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) for your Confluent Cloud cluster and credentials:
 
@@ -33,3 +33,10 @@ CONFLUENT_BASIC_AUTH_USER_INFO
 3. Fork this repository and push a change to trigger the [workflow](.github/workflows/python-kafka-app.yml).
 
 ![image](images/jobs-text.png)
+
+## Resources
+
+- [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/): Cloud-native service for Apache Kafka
+- [GitHub Actions for ksqlDB](https://github.com/jzaralim/ksqldb-migrations-action): demonstrates schema migrations upon a ksqlDB cluster running in Confluent Cloud
+- [Kafka Python Client](https://docs.confluent.io/kafka-clients/python/current/overview.html)
+- [GitHub Actions](https://docs.github.com/en/actions)
