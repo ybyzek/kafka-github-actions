@@ -1,3 +1,9 @@
+## README
+
+* [Overview](#overview)
+* [Instructions](#instructions)
+* [Resources](#resources)
+
 ## Overview
 
 This demo uses GitHub Actions for developing and valiating Apache Kafka client application, focusing on a Python producer and consumer using Kafka Python Client.
