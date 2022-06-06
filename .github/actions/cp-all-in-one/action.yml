@@ -10,10 +10,6 @@ inputs:
     description: 'Define service up to which to start'
     required: false
     default: ''
-  project:
-    description: 'docker project name used to set network name'
-    required: false
-    default: 'dockernet'
 runs:
   using: 'docker'
   image: 'Dockerfile'
