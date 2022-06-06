@@ -3,6 +3,7 @@ name: python-kafka-app
 on: [push]
 
 env:
+  # General
   DEST_WORKSPACE: ${{ github.workspace }}
   NETWORK: workspace_default
   TOPIC: t20
@@ -27,14 +28,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Log in to the Container registry
+      - name: Log in to the GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image for Kafka client app
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -68,7 +69,7 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Run Confluent Platform
+      - name: Run Confluent Platform (Confluent Server)
         uses: ./.github/actions/cp-all-in-one
         with:
           service: broker
@@ -100,12 +101,12 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Run Confluent Platform
+      - name: Run Confluent Platform (Confluent Server and Confluent Schema Registry)
         uses: ./.github/actions/cp-all-in-one
         with:
           service: schema-registry
 
-      - name: Run Kafka client app to local cluster
+      - name: Run Kafka client app to local cluster with Schema Registry and Avro data
         run: |
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local-avro.config:/etc/librdkafka.config \
@@ -169,7 +170,7 @@ jobs:
           to_file: 'configs/librdkafka.ccloud-avro.config'
           commit: 'false'
 
-      - name: Run Kafka client app to Confluent Cloud
+      - name: Run Kafka client app to Confluent Cloud with Schema Registry and Avro data
         run: |
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
@@ -200,7 +201,7 @@ jobs:
           to_file: 'configs/librdkafka.ccloud-avro.config'
           commit: 'false'
 
-      - name: Test compatibility of new schema
+      - name: Test compatibility of a new schema
         run: |
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
