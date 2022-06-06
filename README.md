@@ -6,8 +6,8 @@ The code defines a [GitHub Actions workflow](.github/workflows/python-kafka-app.
 
 - Build Docker image for the client application
 - Unit test with [rdkafka mock](https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_mock.h)
-- Local test using [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
-- Local test with Schema Registry and Avro using [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
+- Local test using an action to run [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
+- Local test with Schema Registry and Avro using an action to run [cp-all-in-one](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
 - Confluent Cloud test
 - Confluent Cloud test with Schema Registry and Avro
 - Schema compatibility check
@@ -30,6 +30,6 @@ CONFLUENT_SCHEMA_REGISTRY_URL
 CONFLUENT_BASIC_AUTH_USER_INFO
 ```
 
-3. Fork this repository and push a change to see the [workflow](.github/workflows/python-kafka-app.yml) in action.
+3. Fork this repository and push a change to trigger the [workflow](.github/workflows/python-kafka-app.yml).
 
 ![image](images/jobs-text.png)
