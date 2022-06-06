@@ -4,8 +4,8 @@ on: [push]
 
 env:
   DEST_WORKSPACE: ${{ github.workspace }}
-  PROJECT: ${PROJECT}
-  NETWORK: ${NETWORK}
+  PROJECT: dockernet
+  NETWORK: dockernet_default
   TOPIC: t20
   CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
   CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
