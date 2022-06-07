@@ -70,7 +70,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run Confluent Platform (Confluent Server)
-        uses: ybyzek/cp-all-in-one
+        uses: ybyzek/cp-all-in-one@v0.2
         with:
           service: broker
 
@@ -102,7 +102,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run Confluent Platform (Confluent Server and Confluent Schema Registry)
-        uses: ybyzek/cp-all-in-one
+        uses: ybyzek/cp-all-in-one@v0.2
         with:
           service: schema-registry
 
