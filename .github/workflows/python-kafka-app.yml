@@ -215,6 +215,8 @@ jobs:
 
   ccloud-schema-compatibility-java:
 
+    needs: ccloud-avro
+
     runs-on: ubuntu-latest
 
     steps:
