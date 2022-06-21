@@ -10,9 +10,9 @@ This demo uses GitHub Actions for developing and valiating Apache Kafka client a
 
 The code defines an GitHub Actions workflow [kafka-app](.github/workflows/kafka-app.yml) with jobs to demonstrate a few capabilities:
 
-- `build`: Build a Docker image for the [Kafka Python client application](src/)
-- `unit`: Unit test the app with [rdkafka mock](https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_mock.h)
-- `local`: Locally test the app using an action called [cp-all-in-one-action](https://github.com/marketplace/actions/run-kafka-with-confluent-cp-all-in-one) to run Confluent Platform from a [Docker Compose file](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
+- [build](.github/workflows/kafka-app.yml#L20-L43): Build a Docker image for the [Kafka Python client application](src/)
+- [unit](.github/workflows/kafka-app.yml#L45-L60): Unit test the app with [rdkafka mock](https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_mock.h)
+- [local](.github/workflows/kafka-app.yml#L62-L92): Locally test the app using an action called [cp-all-in-one-action](https://github.com/marketplace/actions/run-kafka-with-confluent-cp-all-in-one) to run Confluent Platform from a [Docker Compose file](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
 - `local-avro`: Locally test the app with Schema Registry and Avro using an action called [cp-all-in-one-action](https://github.com/marketplace/actions/run-kafka-with-confluent-cp-all-in-one) to run Confluent Platform from a [Docker Compose file](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
 - `ccloud`: Test the app to [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/)
 - `ccloud-avro`: Test the app to [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/) with Confluent Cloud Schema Registry and Avro
