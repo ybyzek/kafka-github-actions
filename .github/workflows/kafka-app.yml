@@ -2,7 +2,7 @@ name: kafka-app
 
 on: 
   workflow_run:
-    workflows: [kafka-app-pre]
+    workflows: ["kafka app pre"]
     types: [completed]
 
 env:

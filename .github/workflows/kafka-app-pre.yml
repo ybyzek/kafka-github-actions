@@ -1,4 +1,4 @@
-name: kafka-app-pre
+name: kafka app pre
 
 on: [push]
 
