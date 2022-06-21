@@ -16,8 +16,8 @@ The code defines an GitHub Actions workflow [python-kafka-app](.github/workflows
 - `local-avro`: Locally test the app with Schema Registry and Avro using an action called [cp-all-in-one](.github/actions/cp-all-in-one/) to run Confluent Platform from a [Docker Compose file](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
 - `ccloud`: Test the app to [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/)
 - `ccloud-avro`: Test the app to [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/) with Confluent Cloud Schema Registry and Avro
-- `ccloud-schema-compatibility-python`: Use `SchemaRegistryClient.test_compatibility()` to check a new schema's compatibility to the existing schema in Confluent Cloud Schema Registry
-- `ccloud-schema-compatibility-java`: Use Maven's `kafka-schema-registry-maven-plugin` to check a new schema's compatibility to the existing schema in Confluent Cloud Schema Registry
+- `ccloud-python-schema-compatibility`: Use [SchemaRegistryClient.test_compatibility()](https://docs.confluent.io/platform/current/clients/confluent-kafka-python/html/_modules/confluent_kafka/schema_registry/schema_registry_client.html) to check a new schema's compatibility to the existing schema in Confluent Cloud Schema Registry
+- `ccloud-java-schema-compatibility`: Use [kafka-schema-registry-maven-plugin](https://docs.confluent.io/platform/current/schema-registry/develop/maven-plugin.html) to check a new schema's compatibility to the existing schema in Confluent Cloud Schema Registry
 
 ![image](images/jobs-graphic.png)
 

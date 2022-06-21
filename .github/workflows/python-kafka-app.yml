@@ -185,7 +185,7 @@ jobs:
       - name: Test message count
         run: tests/ccloud-avro.sh $TOPICAVRO
 
-  ccloud-schema-compatibility-python:
+  ccloud-python-schema-compatibility:
 
     needs: ccloud-avro
 
@@ -214,7 +214,7 @@ jobs:
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/test_schema_compatibility.py -f /etc/librdkafka.config -t $TOPICAVRO -s /etc/Count-fail.avsc -e'
 
-  ccloud-schema-compatibility-java:
+  ccloud-java-schema-compatibility:
 
     needs: ccloud-avro
 

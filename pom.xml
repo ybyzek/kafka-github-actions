@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>io.confluent</groupId>
+        <artifactId>rest-utils-parent</artifactId>
+        <version>7.1.1</version>
+    </parent>
+
     <groupId>io.confluent</groupId>
     <artifactId>GitHub-Actions-Schema-Registry-Test-Compatibility</artifactId>
     <version>1.0</version>
@@ -14,6 +20,14 @@
         <newSchema>schemas/Count.avsc</newSchema>
         <confluent.version>7.1.0</confluent.version>
     </properties>
+
+    <repositories>
+      <repository>
+        <id>confluent</id>
+        <name>Confluent</name>
+        <url>https://packages.confluent.io/maven/</url>
+      </repository>
+    </repositories>
 
     <build>
         <plugins>
