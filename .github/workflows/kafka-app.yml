@@ -1,6 +1,9 @@
 name: kafka-app
 
-on: [push]
+on: 
+  workflow_run:
+    workflows: [kafka-app-pre]
+    types: [completed]
 
 env:
   # General

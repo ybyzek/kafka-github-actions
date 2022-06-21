@@ -1,0 +1,43 @@
+name: kafka-app-pre
+
+on: [push]
+
+env:
+  # General
+  DEST_WORKSPACE: ${{ github.workspace }}
+  NETWORK: workspace_default
+  TOPIC: t3
+  CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
+  CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
+  CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
+  # Confluent Cloud Schema Registry and AVRO
+  TOPICAVRO: t3-avro
+  CONFLUENT_SCHEMA_REGISTRY_URL: ${{ secrets.CONFLUENT_SCHEMA_REGISTRY_URL }}
+  CONFLUENT_BASIC_AUTH_USER_INFO: ${{ secrets.CONFLUENT_BASIC_AUTH_USER_INFO }}
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image for Kafka client app
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.actor }}/kafka-app:latest
