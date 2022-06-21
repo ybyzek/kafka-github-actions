@@ -6,9 +6,9 @@
 
 ## Overview
 
-This demo uses GitHub Actions for developing and valiating Apache Kafka client application, focusing on a Python producer and consumer using Kafka Python Client.
+This demo uses GitHub Actions for developing and valiating Apache Kafka client application, focusing on a Python producer and consumer using Kafka Python Client, plus examples for testing [schema](schemas/) compatibility using both Python and Java.
 
-The code defines a GitHub Actions workflow called [python-kafka-app](.github/workflows/python-kafka-app.yml) with jobs to demonstrate a few capabilities:
+The code defines an GitHub Actions workflow [python-kafka-app](.github/workflows/python-kafka-app.yml) with jobs to demonstrate a few capabilities:
 
 - `build`: Build a Docker image for the [Kafka Python client application](src/)
 - `unit`: Unit test the app with [rdkafka mock](https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_mock.h)
@@ -16,7 +16,8 @@ The code defines a GitHub Actions workflow called [python-kafka-app](.github/wor
 - `local-avro`: Locally test the app with Schema Registry and Avro using an action called [cp-all-in-one](.github/actions/cp-all-in-one/) to run Confluent Platform from a [Docker Compose file](https://docs.confluent.io/platform/current/tutorials/build-your-own-demos.html#cp-all-in-one)
 - `ccloud`: Test the app to [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/)
 - `ccloud-avro`: Test the app to [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree-v1/) with Confluent Cloud Schema Registry and Avro
-- `ccloud-schema-compatibility`: Check a new schema's compatibility to the exist schema in Confluent Cloud Schema Registry
+- `ccloud-schema-compatibility-python`: Use `SchemaRegistryClient.test_compatibility()` to check a new schema's compatibility to the existing schema in Confluent Cloud Schema Registry
+- `ccloud-schema-compatibility-java`: Use Maven's `kafka-schema-registry-maven-plugin` to check a new schema's compatibility to the existing schema in Confluent Cloud Schema Registry
 
 ![image](images/jobs-graphic.png)
 
@@ -39,6 +40,19 @@ CONFLUENT_BASIC_AUTH_USER_INFO
 3. Fork this repository and push a change to trigger the [workflow](.github/workflows/python-kafka-app.yml).
 
 ![image](images/jobs-text.png)
+
+## Ports of cp-all-in-one
+
+Confluent Platform ports from `cp-all-in-one` include:
+
+- ZooKeeper: 2181
+- Kafka broker: 9092
+- Kafka broker JMX: 9101
+- Confluent Schema Registry: 8081
+- Kafka Connect: 8083
+- Confluent Control Center: 9021
+- ksqlDB: 8088
+- Confluent REST Proxy: 8082
 
 ## Resources
 
