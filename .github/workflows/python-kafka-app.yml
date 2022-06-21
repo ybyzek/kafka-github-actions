@@ -203,11 +203,12 @@ jobs:
 
       - name: Test compatibility of a new schema
         run: |
+          # Pass
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
                         bash -c '/usr/bin/test_schema_compatibility.py -f /etc/librdkafka.config -t $TOPICAVRO -s /etc/Count-pass.avsc'
-          # The -e flag sets expected_pass to False
+          # Fail; the -e flag sets expected_pass to False
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
                         --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
@@ -232,10 +233,12 @@ jobs:
 
       - name: Test compatibility of a new schema
         run: |
+          # Pass
           mvn io.confluent:kafka-schema-registry-maven-plugin:test-compatibility \
               "-DschemaRegistryUrl=$CONFLUENT_SCHEMA_REGISTRY_URL" \
               "-DschemaRegistryBasicAuthUserInfo=$CONFLUENT_BASIC_AUTH_USER_INFO" \
               "-DnewSchema=schemas/Count-pass.avsc"
+          # Fail
           mvn io.confluent:kafka-schema-registry-maven-plugin:test-compatibility \
               "-DschemaRegistryUrl=$CONFLUENT_SCHEMA_REGISTRY_URL" \
               "-DschemaRegistryBasicAuthUserInfo=$CONFLUENT_BASIC_AUTH_USER_INFO" \
