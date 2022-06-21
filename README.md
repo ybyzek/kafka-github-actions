@@ -8,7 +8,7 @@
 
 This demo uses GitHub Actions for developing and valiating Apache Kafka client application, focusing on a Python producer and consumer using Kafka Python Client, plus examples for testing [schema](schemas/) compatibility using both Python and Java.
 
-The code defines an GitHub Actions workflow [python-kafka-app](.github/workflows/python-kafka-app.yml) with jobs to demonstrate a few capabilities:
+The code defines an GitHub Actions workflow [kafka-app](.github/workflows/kafka-app.yml) with jobs to demonstrate a few capabilities:
 
 - `build`: Build a Docker image for the [Kafka Python client application](src/)
 - `unit`: Unit test the app with [rdkafka mock](https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_mock.h)
@@ -37,7 +37,7 @@ CONFLUENT_SCHEMA_REGISTRY_URL
 CONFLUENT_BASIC_AUTH_USER_INFO
 ```
 
-3. Fork this repository and push a change to trigger the [workflow](.github/workflows/python-kafka-app.yml).
+3. Fork this repository and push a change to trigger the [workflow](.github/workflows/kafka-app.yml).
 
 ![image](images/jobs-text.png)
 

@@ -1,4 +1,4 @@
-name: python-kafka-app
+name: kafka-app
 
 on: [push]
 
@@ -40,7 +40,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.actor }}/python-app:latest
+          tags: ghcr.io/${{ github.actor }}/kafka-app:latest
 
   unit:
 
@@ -56,7 +56,7 @@ jobs:
         run: |
           docker run -t -e TOPIC=$TOPIC \
                        -v ${DEST_WORKSPACE}/configs/librdkafka.unit.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
 
   local:
@@ -79,12 +79,12 @@ jobs:
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local.config:/etc/librdkafka.config \
                         --net ${NETWORK} \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local.config:/etc/librdkafka.config \
                         --net ${NETWORK} \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
@@ -111,12 +111,12 @@ jobs:
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local-avro.config:/etc/librdkafka.config \
                         --net ${NETWORK} \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c '/usr/bin/producer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO'
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.local-avro.config:/etc/librdkafka.config \
                         --net ${NETWORK} \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
@@ -143,11 +143,11 @@ jobs:
         run: |
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
           docker run -t -e TOPIC=$TOPIC \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer.py -f /etc/librdkafka.config -t $TOPIC' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
@@ -174,11 +174,11 @@ jobs:
         run: |
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c '/usr/bin/producer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO'
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c 'timeout 10s /usr/bin/consumer_ccsr.py -f /etc/librdkafka.config -t $TOPICAVRO' \
                           || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
@@ -206,12 +206,12 @@ jobs:
           # Pass
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c '/usr/bin/test_schema_compatibility.py -f /etc/librdkafka.config -t $TOPICAVRO -s /etc/Count-pass.avsc'
           # Fail; the -e flag sets expected_pass to False
           docker run -t -e TOPICAVRO=$TOPICAVRO \
                         -v ${DEST_WORKSPACE}/configs/librdkafka.ccloud-avro.config:/etc/librdkafka.config \
-                        --name my-python-app --rm ghcr.io/${{ github.actor }}/python-app:latest \
+                        --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c '/usr/bin/test_schema_compatibility.py -f /etc/librdkafka.config -t $TOPICAVRO -s /etc/Count-fail.avsc -e'
 
   ccloud-java-schema-compatibility:
