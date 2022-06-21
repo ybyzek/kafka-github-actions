@@ -12,7 +12,7 @@
         <schemaRegistryUrl></schemaRegistryUrl>
         <schemaRegistryBasicAuthUserInfo></schemaRegistryBasicAuthUserInfo>
         <newSchema>schemas/Count.avsc</newSchema>
-        <confluent.version>7.1.1</confluent.version>
+        <confluent.version>7.1.0</confluent.version>
     </properties>
 
     <build>
