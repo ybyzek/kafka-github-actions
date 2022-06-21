@@ -1,4 +1,4 @@
-name: kafka-app
+name: kafka-app-rename
 
 on:
   workflow_run:
