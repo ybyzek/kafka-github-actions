@@ -27,11 +27,8 @@
                     </schemaRegistryUrls>
                     <userInfoConfig>${schemaRegistryBasicAuthUserInfo}</userInfoConfig>
                     <subjects>
-                        <t21-avro-value>${newSchema}</t21-avro-value>
+                        <t3-avro-value>${newSchema}</t3-avro-value>
                     </subjects>
-                    <schemaTypes>
-                        <t21-avro>AVRO</t21-avro>
-                    </schemaTypes>
                 </configuration>
                 <executions>
                     <execution>

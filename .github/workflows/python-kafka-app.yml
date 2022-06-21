@@ -6,12 +6,12 @@ env:
   # General
   DEST_WORKSPACE: ${{ github.workspace }}
   NETWORK: workspace_default
-  TOPIC: t20
+  TOPIC: t3
   CONFLUENT_BOOTSTRAP_SERVERS: ${{ secrets.CONFLUENT_BOOTSTRAP_SERVERS }}
   CONFLUENT_API_KEY: ${{ secrets.CONFLUENT_API_KEY }}
   CONFLUENT_API_SECRET: ${{ secrets.CONFLUENT_API_SECRET }}
   # Confluent Cloud Schema Registry and AVRO
-  TOPICAVRO: t21-avro
+  TOPICAVRO: t3-avro
   CONFLUENT_SCHEMA_REGISTRY_URL: ${{ secrets.CONFLUENT_SCHEMA_REGISTRY_URL }}
   CONFLUENT_BASIC_AUTH_USER_INFO: ${{ secrets.CONFLUENT_BASIC_AUTH_USER_INFO }}
 
