@@ -47,3 +47,4 @@ CONFLUENT_BASIC_AUTH_USER_INFO
 - [GitHub Actions for ksqlDB](https://github.com/jzaralim/ksqldb-migrations-action): demonstrates schema migrations upon a ksqlDB cluster running in Confluent Cloud
 - [Kafka Python Client](https://docs.confluent.io/kafka-clients/python/current/overview.html)
 - [GitHub Actions](https://docs.github.com/en/actions)
+
