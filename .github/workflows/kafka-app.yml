@@ -43,7 +43,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.actor }}/kafka-app:latest
 
-  unit:
+  sanity:
 
     needs: build
 
@@ -54,16 +54,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Run Kafka client app unit test
+      - name: Run Kafka client app sanity test
         run: |
           docker run -t -e TOPIC=$TOPIC \
-                        -v ${DEST_WORKSPACE}/configs/librdkafka.unit.config:/etc/librdkafka.config \
+                        -v ${DEST_WORKSPACE}/configs/librdkafka.sanity.config:/etc/librdkafka.config \
                         --name my-kafka-app --rm ghcr.io/${{ github.actor }}/kafka-app:latest \
                         bash -c '/usr/bin/producer.py -f /etc/librdkafka.config -t $TOPIC'
 
   local:
 
-    needs: unit
+    needs: sanity
 
     runs-on: ubuntu-latest
 
@@ -96,7 +96,7 @@ jobs:
 
   local-avro:
 
-    needs: unit
+    needs: sanity
 
     runs-on: ubuntu-latest
 

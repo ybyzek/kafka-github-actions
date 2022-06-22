@@ -39,7 +39,7 @@ if __name__ == '__main__':
     producer_conf = ccloud_lib.pop_schema_registry_params_from_config(conf)
     producer = Producer(producer_conf)
 
-    # Manually create topic if not running unit tests with mock cluster
+    # Manually create topic if not running a test with a mock cluster
     if 'test.mock.num.brokers' not in conf.keys():
       ccloud_lib.create_topic(conf, topic)
 
